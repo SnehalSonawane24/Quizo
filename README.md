@@ -1,5 +1,4 @@
 # Quiz App 
-# Quiz App - README
 
 ## Overview
 
