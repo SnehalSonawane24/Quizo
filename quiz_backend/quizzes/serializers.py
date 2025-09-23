@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from quizzes.models import Quiz, Question, Option
+from quizzes.models import Quiz, Question, Option, QuizAttempt
 
 
+# Serializer for Question-Option nested representation
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Option
@@ -9,6 +10,7 @@ class OptionSerializer(serializers.ModelSerializer):
         read_only_fields = ("question",)
 
 
+# Serializer for Creating and Updating Options Separately
 class QuizOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Option
@@ -89,3 +91,48 @@ class QuizSerializer(serializers.ModelSerializer):
         quiz.total_questions = quiz.questions.count()
         quiz.save()
         return quiz
+    
+
+# Serializer for Answser Submission
+class OptionSubSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Option
+        fields = ["id", "text", "image"]
+
+
+class QuestionSubSerializer(serializers.ModelSerializer):
+    options = OptionSubSerializer(many=True)
+
+    class Meta:
+        model = Question
+        fields = ["id", "text", "image", "question_type", "options"]
+
+
+class QuizDetailSerializer(serializers.ModelSerializer):
+    questions = serializers.SerializerMethodField()
+    total_questions = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Quiz
+        fields = ["id", "title", "description", "total_questions", "time_limit", "shuffle_questions", "questions"]
+
+    def get_questions(self, obj):
+        qs = obj.questions.all()
+        if obj.shuffle_questions:
+            qs = qs.order_by("?")
+        return QuestionSubSerializer(qs, many=True).data
+    
+    def get_total_questions(self, obj):
+        return obj.questions.count()
+
+class QuizAttemptSerilizer(serializers.ModelSerializer):
+
+    class Meta:
+        model = QuizAttempt
+        fields = ["id", "user", "quiz", "started_at", "completed_at", "score", "negative_marks", "is_completed", "is_passed"]
+        read_only_fields = ["score", "negative_marks", "is_completed", "is_passed", "started_at", "completed_at"]
+
+
+class SubmitAnswserSerializer(serializers.Serializer):
+    question = serializers.IntegerField()
+    selected_options = serializers.ListField(child=serializers.IntegerField(), allow_empty=True)

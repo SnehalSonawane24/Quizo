@@ -1,8 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import action
+from django.utils import timezone
 from quizzes.models import Quiz
-from quizzes.serializers import QuizSerializer, QuestionSerializer, QuizOptionSerializer
-from quizzes.models import Question, Option
+from quizzes.serializers import QuizSerializer, QuestionSerializer, QuizOptionSerializer, QuizDetailSerializer, QuizAttemptSerilizer, SubmitAnswserSerializer
+from quizzes.models import Question, Option, QuizAttempt, UserAnswer
 from users.utility import custom_response
 
 
@@ -203,3 +206,94 @@ class OptionViewSet(viewsets.ModelViewSet):
             data=serializer.data,
             status_code=status.HTTP_200_OK,
         )
+    
+
+class UserQuizViewSet(viewsets.ViewSet):
+    permission_classes = [IsAuthenticated]
+
+    def list(self,request):
+        now = timezone.now()
+        quizzes = Quiz.objects.filter(is_published=True, start_time__lte=now, end_time__gte=now)
+        serializer = QuizDetailSerializer(quizzes, many=True)
+        return custom_response(
+            success=True,
+            message="Active quizzes retrieved successfully",
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
+    
+    def retrieve(self, request, pk=None):
+        quiz = Quiz.objects.filter(pk=pk, is_published=True).first()
+        if not quiz:
+            return Response({"error": "Quiz not found"}, status=404)
+        
+        serializer = QuizDetailSerializer(quiz)
+        return custom_response(
+            success=True,
+            message="Quiz details retrieved successfully",
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )
+    
+    @action(detail=True, methods=["POST"])
+    def start_attempt(self, request, pk=None):
+        quiz = Quiz.objects.filter(pk=pk, is_published=True).first()
+        if not quiz:
+            return Response({"error": "Quiz not found"}, status=404)
+        attempt = QuizAttempt.objects.create(user=request.user, quiz=quiz, attempt_number= QuizAttempt.objects.filter(user=request.user, quiz=quiz).count() + 1)
+        serializer = QuizAttemptSerilizer(attempt)
+        return custom_response(
+            success=True,
+            message="Quiz attempt started successfully",
+            data=serializer.data,
+            status_code=status.HTTP_201_CREATED,
+        )
+
+    @action(detail=True, methods=["POST"])
+    def submit_answer(self, request, pk=None):
+        attempt = QuizAttempt.objects.filter(pk=pk, user=request.user, is_completed=False).first()
+        if not attempt:
+            return Response({"error": "No active attempt found"}, status=404)
+        
+        serializer = SubmitAnswserSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        question = Question.objects.get(id=serializer.validated_data['question'])
+        selected_option_ids = serializer.validated_data.get("selected_options", [])
+        options = Option.objects.filter(id__in=selected_option_ids, question=question)
+
+        user_answer, _ = UserAnswer.objects.get_or_create(attempt=attempt, question=question)
+        user_answer.selected_options.set(options)
+
+        return custom_response(
+            success=True,
+            message="Answer submitted successfully",
+            data={},
+            status_code=status.HTTP_200_OK,
+        )
+    
+    @action(detail=True, methods=["POST"])
+    def finish_attempt(self, request, pk=None):
+        attempt = QuizAttempt.objects.filter(pk=pk, user=request.user, is_completed=False).first()
+        if not attempt:
+            return Response({"error": "Attempt not found or already finished"}, status=404)
+
+        score = 0
+        negative_marks = 0
+        for answer in attempt.answers.all():
+            correct_options = set(answer.question.options.filter(is_correct=True).values_list("id", flat=True))
+            selected_ids = set(answer.selected_options.values_list("id", flat=True))
+            if selected_ids == correct_options:
+                score += answer.question.marks
+            else:
+                negative_marks += getattr(answer.question, "negative_marks", 0)
+
+        attempt.score = score
+        attempt.negative_marks = negative_marks
+        attempt.is_passed = score >= getattr(attempt.quiz, "passing_score", 0)
+        attempt.is_completed = True
+        attempt.completed_at = timezone.now()
+        attempt.save()
+
+        serializer = QuizAttemptSerilizer(attempt)
+        return Response({"success": True, "data": serializer.data})
