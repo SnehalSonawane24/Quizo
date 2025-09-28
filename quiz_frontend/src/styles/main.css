@@ -1,0 +1,37 @@
+/* src/styles/common.css */
+
+/* 🌸 Pastel Theme Colors */
+:root {
+  --p-pink: #fbcfe8;    /* Pastel Pink */
+  --p-blue: #bfdbfe;    /* Pastel Blue */
+  --p-mint: #bbf7d0;    /* Pastel Mint */
+  --p-lavender: #e9d5ff;/* Pastel Lavender */
+  --p-yellow: #fef9c3;  /* Pastel Yellow */
+  --p-white: #ffffff;
+  --p-gray: #f1f5f9;    /* Soft Gray */
+}
+
+/* 🌐 Global styles */
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, var(--p-pink), var(--p-mint));
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h1, h2, h3 {
+  color: #333;
+  font-weight: 600;
+}
+
+a {
+  color: var(--p-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
