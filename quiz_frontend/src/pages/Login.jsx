@@ -5,11 +5,7 @@ import "../styles/login.css";
 
 export default function Login() {
   const navigate = useNavigate();
-
-  const [form, setForm] = useState({
-    username: "",
-    password: "",
-  });
+  const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) =>
@@ -25,23 +21,26 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-
       const data = await res.json();
 
       if (data.Success) {
-        // ✅ Save tokens to localStorage
+        // Save tokens
         localStorage.setItem("access_token", data.Data.access);
         localStorage.setItem("refresh_token", data.Data.refresh);
-        localStorage.setItem("user_id", data.Data.user);
-
-        alert("✅ Login Successful!");
-
-        // Redirect (you can change this later)
-        navigate("/user/dashboard");
+        
+        // Save full user object for dashboard & role checks
+        localStorage.setItem("user", JSON.stringify(data.Data.user));
+        // Redirect based on role
+        if (data.Data.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       } else {
         alert(`❌ ${data.Message}`);
       }
     } catch (err) {
+      console.error(err);
       alert("Something went wrong!");
     } finally {
       setLoading(false);
@@ -72,7 +71,6 @@ export default function Login() {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
-
       <div className="login-footer">
         Don’t have an account? <a href="/register">Register</a>
       </div>
