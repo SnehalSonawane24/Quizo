@@ -1,51 +1,80 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/main.css";
+import "../styles/login.css";
 
 export default function Login() {
-  const [asAdmin, setAsAdmin] = useState(false);
-  const [form, setForm] = useState({ username: '', password: '' });
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = e => setForm({...form, [e.target.name]: e.target.value});
+  const [form, setForm] = useState({
+    username: "",
+    password: "",
+  });
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
     try {
-      const res = await login(form);
-      const saved = JSON.parse(localStorage.getItem('quizzo_user'));
-      if (saved && saved.role === 'admin') navigate('/admin/dashboard');
-      else navigate('/user/dashboard');
+      const res = await fetch("http://127.0.0.1:8000/api/user/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (data.Success) {
+        // ✅ Save tokens to localStorage
+        localStorage.setItem("access_token", data.Data.access);
+        localStorage.setItem("refresh_token", data.Data.refresh);
+        localStorage.setItem("user_id", data.Data.user);
+
+        alert("✅ Login Successful!");
+
+        // Redirect (you can change this later)
+        navigate("/user/dashboard");
+      } else {
+        alert(`❌ ${data.Message}`);
+      }
     } catch (err) {
-      alert(err?.response?.data?.message || 'Login failed');
+      alert("Something went wrong!");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-p-pink/10 flex items-center justify-center">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-2xl font-semibold text-gray-800 mb-4">Quizzo</h1>
-        <div className="flex gap-2 mb-4">
-          <button onClick={() => setAsAdmin(false)} className={`py-2 px-4 rounded ${!asAdmin? 'bg-p-mint' : 'bg-gray-100'}`}>Login as User</button>
-          <button onClick={() => setAsAdmin(true)} className={`py-2 px-4 rounded ${asAdmin? 'bg-p-lav' : 'bg-gray-100'}`}>Login as Admin</button>
-        </div>
+    <div className="login-container">
+      <h2 className="login-title">Welcome Back</h2>
+      <form onSubmit={handleSubmit} className="login-form">
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit" className="login-button" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input name="username" value={form.username} onChange={handleChange} placeholder="Username" className="w-full p-2 border rounded" />
-          <input name="password" value={form.password} onChange={handleChange} placeholder="Password" type="password" className="w-full p-2 border rounded" />
-          <button disabled={loading} type="submit" className="w-full py-2 rounded bg-p-blue text-white">
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <div className="mt-4 text-sm text-center">
-          Don’t have an account? <a href="/register" className="text-p-lav">Register</a>
-        </div>
+      <div className="login-footer">
+        Don’t have an account? <a href="/register">Register</a>
       </div>
     </div>
   );
