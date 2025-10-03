@@ -4,9 +4,13 @@ import Register from './pages/Register'
 import UserDashboard from './pages/UserDashboard'
 import AdminDashboard from './pages/AdminDashboard'
 import QuizPage from './pages/QuizPage'
+import EditQuizPage from './pages/EditQuizPage'
+import QuizDetailPage from './pages/QuizDetailPage'
 import ResultPage from './pages/ResultPage'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
+import CreateQuizPage from "./pages/CreateQuizPage";
+
 
 export default function App() {
   return (
@@ -30,11 +34,28 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
         <Route
-          path="/quiz/:id"
+          path="/admin/create-quiz"
           element={
             <ProtectedRoute>
-              <QuizPage />
+              <CreateQuizPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/:quizId"
+          element={
+            <ProtectedRoute>
+              <QuizDetailPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/quiz/:quizId/edit"
+          element={
+            <ProtectedRoute>
+              <EditQuizPage />
             </ProtectedRoute>
           }
         />
