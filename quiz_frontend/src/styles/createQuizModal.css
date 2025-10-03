@@ -1,0 +1,125 @@
+.quiz-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-container h2 {
+  text-align: center;
+  color: #a855f7;
+  margin-bottom: 1.5rem;
+}
+
+.quiz-container form input,
+.quiz-container form textarea,
+.quiz-container form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #d8b4fe;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: #faf5ff;
+  box-sizing: border-box;
+}
+
+.quiz-container form textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Grid for datetime and numeric inputs */
+.quiz-container .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Questions section */
+.question-box {
+  border: 1px solid #f0abfc;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  background: #fdf4ff;
+}
+
+/* Options inside question */
+.option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Buttons */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.add-question {
+  background: #c084fc;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.add-question:hover {
+  background: #a855f7;
+}
+
+.add-option {
+  background: #f9a8d4;
+  color: white;
+}
+
+.add-option:hover {
+  background: #ec4899;
+}
+
+.submit-quiz {
+  background: linear-gradient(90deg, #86efac, #4ade80);
+  color: #065f46;
+  font-weight: bold;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+}
+
+.submit-quiz:hover {
+  background: linear-gradient(90deg, #4ade80, #16a34a);
+}
+
+/* Focus effect except checkboxes */
+.quiz-container input:not([type="checkbox"]):focus,
+.quiz-container textarea:focus,
+.quiz-container select:focus {
+  border-color: #a855f7;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.3);
+}
+
+/* Checkbox labels styling */
+.checkbox-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.checkbox-grid label {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.95rem;
+  color: #6b21a8;
+}

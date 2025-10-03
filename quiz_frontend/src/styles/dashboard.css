@@ -1,0 +1,19 @@
+/* src/styles/common.css */
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.btn-primary {
+  background: #a5d8ff; /* pastel blue */
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover {
+  background: #74c0fc;
+}

@@ -1,7 +1,10 @@
-export default function AdminDashboard() {
-  return (
-    <div>
-      <h1>Admin Dashboard</h1>
-    </div>
-  )
+import React from "react";
+import AdminDashboard from "../components/AdminDashboard.jsx";
+
+function DashboardPage() {
+  // saved at login
+  const user = JSON.parse(localStorage.getItem("user"));
+  return <AdminDashboard user={user} />;
 }
+
+export default DashboardPage;

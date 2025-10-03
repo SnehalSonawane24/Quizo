@@ -1,0 +1,106 @@
+.edit-quiz-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.edit-quiz-page h1,
+.edit-quiz-page h2 {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.edit-quiz-page .quiz-meta label,
+.edit-quiz-page .question-card input,
+.edit-quiz-page .question-card textarea,
+.edit-quiz-page .question-card select {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.edit-quiz-page .quiz-meta input[type="checkbox"] {
+  display: inline-block;
+  width: auto;
+  margin-left: 10px;
+}
+
+.edit-quiz-page .quiz-meta select {
+  width: 100%;
+}
+
+.edit-quiz-page .question-card {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #fafafa;
+}
+
+.edit-quiz-page .question-header p {
+  margin: 5px 0;
+}
+
+.edit-quiz-page .options .option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.edit-quiz-page .options .option input[type="text"] {
+  flex: 1;
+}
+
+.edit-quiz-page .options .option label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.edit-quiz-page .add-btn,
+.edit-quiz-page .save-btn,
+.edit-quiz-page .delete-btn,
+.edit-quiz-page .back-btn {
+  padding: 8px 12px;
+  margin-top: 10px;
+  margin-right: 10px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-quiz-page .add-btn {
+  background-color: #a855f7;
+  color: #fff;
+}
+
+.edit-quiz-page .save-btn {
+  background-color: #10b981;
+  color: #fff;
+}
+
+.edit-quiz-page .delete-btn {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+.edit-quiz-page .back-btn {
+  background-color: #6b7280;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.edit-quiz-page .loading,
+.edit-quiz-page .no-quiz {
+  text-align: center;
+  font-size: 16px;
+  color: #555;
+}

@@ -5,7 +5,6 @@ import "../styles/registration.css";
 
 export default function Register() {
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -15,7 +14,8 @@ export default function Register() {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,12 +30,24 @@ export default function Register() {
       const data = await res.json();
 
       if (data.Success) {
-        alert("✅ Registered Successfully!");
-        navigate("/");
+        alert("Registered Successfully!");
+
+        // Optional: Auto-login after registration
+        localStorage.setItem("access_token", data.Data.access);
+        localStorage.setItem("refresh_token", data.Data.refresh);
+        localStorage.setItem("user", JSON.stringify(data.Data.user));
+
+        // Redirect based on role
+        if (data.Data.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/user/dashboard");
+        }
       } else {
         alert(`❌ ${data.Message}`);
       }
     } catch (err) {
+      console.error(err);
       alert("Something went wrong!");
     } finally {
       setLoading(false);
@@ -78,7 +90,6 @@ export default function Register() {
           {loading ? "Registering..." : "Register"}
         </button>
       </form>
-
       <div className="register-footer">
         Already have an account? <a href="/">Login</a>
       </div>

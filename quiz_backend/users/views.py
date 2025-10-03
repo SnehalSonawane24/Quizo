@@ -38,7 +38,7 @@ class LoginApiView(APIView):
                 data={
                     "refresh": data.get("refresh"),
                     "access": data.get("access"),
-                    "user": data["user"]["id"]
+                    "user": data.get("user")
                 },
                 status_code=status.HTTP_200_OK
             )
