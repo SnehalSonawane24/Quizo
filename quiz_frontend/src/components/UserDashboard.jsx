@@ -102,7 +102,7 @@ export default function UserDashboard() {
 
                   <button
                     className="btn-start"
-                    onClick={() => navigate(`/quiz/${quiz}/attempt`)}>
+                    onClick={() => navigate(`/quiz/${quiz.id}/attempt`)}>
                     <FaPlay /> Start
                   </button>
                 </td>
