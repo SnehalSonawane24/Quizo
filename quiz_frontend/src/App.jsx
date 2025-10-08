@@ -10,6 +10,7 @@ import ResultPage from './pages/ResultPage'
 import { AuthProvider } from './context/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute'
 import CreateQuizPage from "./pages/CreateQuizPage";
+import QuizAttemptPage from './pages/QuizAttemptPage';
 
 
 export default function App() {
@@ -25,6 +26,10 @@ export default function App() {
               <UserDashboard />
             </ProtectedRoute>
           }
+        />
+        <Route
+          path="/quiz/:quizId/attempt"
+          element={<QuizAttemptPage />}
         />
         <Route
           path="/admin/dashboard"
@@ -60,7 +65,7 @@ export default function App() {
           }
         />
         <Route
-          path="/results/:id"
+          path="/quiz/:attemptId/result"
           element={
             <ProtectedRoute>
               <ResultPage />

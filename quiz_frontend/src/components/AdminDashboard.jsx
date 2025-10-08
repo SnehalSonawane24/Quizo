@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
 import "../styles/adminDashboard.css";
-import { FaPlus, FaEdit, FaTrash, FaEye, FaUser } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaEye, FaUser, FaSignOutAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminDashboard() {
@@ -62,16 +62,25 @@ export default function AdminDashboard() {
 
   if (loading) return <div className="loading">Loading admin dashboard...</div>;
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
   return (
 
     <div className="admin-dashboard-container">
 
       <div className="user-info-row">
-        <FaUser size={40} className="user-icon" />
+
         <div className="user-details">
           <h2 className="username">{user?.username}</h2>
           <p className="email">{user?.email}</p>
         </div>
+        <button className="btn-logout" onClick={handleLogout}>
+          <FaSignOutAlt className="user-icon" /> Logout
+        </button>
       </div>
 
       <div className="header">
@@ -205,6 +214,6 @@ export default function AdminDashboard() {
       )}
 
     </div>
-    
+
   );
 }

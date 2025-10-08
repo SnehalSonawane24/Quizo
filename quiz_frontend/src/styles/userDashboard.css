@@ -15,12 +15,14 @@
   border-radius: 12px;
   margin-bottom: 25px;
   gap: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  justify-content: space-between;
 }
 
-.user-info > h2, p {
-  text-align: center;       
-  margin: 50px;   
+.user-info>h2,
+p {
+  text-align: center;
+  margin: 50px;
   gap: 20%;
 }
 
@@ -44,7 +46,7 @@
   background: #fff;
   padding: 15px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .progress-bar-bg {
@@ -70,10 +72,11 @@ table {
   margin-bottom: 30px;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-th, td {
+th,
+td {
   padding: 12px 15px;
   text-align: center;
 }
@@ -96,7 +99,8 @@ td {
 }
 
 /* Buttons */
-.btn-start, .btn-retry {
+.btn-start,
+.btn-retry {
   padding: 6px 12px;
   border-radius: 8px;
   border: none;

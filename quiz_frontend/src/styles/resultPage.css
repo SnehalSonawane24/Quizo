@@ -1,0 +1,124 @@
+.result-container {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 30px 40px;
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+}
+
+.result-header {
+    margin-bottom: 20px;
+}
+
+.quiz-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #6a0dad;
+    /* violet highlight */
+    margin-bottom: 8px;
+}
+
+.user-inline-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.95rem;
+    color: #444;
+}
+
+.user-inline-info .user-name svg {
+    margin-right: 6px;
+    color: #6a0dad;
+}
+
+.result-summary {
+    margin-top: 20px;
+    background: #f8f7fc;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.score-box {
+    margin-bottom: 15px;
+}
+
+.icon-pass {
+    color: #28a745;
+    font-size: 2rem;
+}
+
+.icon-fail {
+    color: #dc3545;
+    font-size: 2rem;
+}
+
+.score-box h3 {
+    margin-top: 8px;
+    font-weight: 600;
+}
+
+.time-info {
+    text-align: left;
+    font-size: 0.95rem;
+    color: #333;
+    margin-top: 10px;
+}
+
+.time-info p {
+    margin: 6px 0;
+}
+
+.message-box {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.message-box.pass {
+    background: #e7f9ee;
+    color: #1e7d32;
+}
+
+.message-box.fail {
+    background: #fde8e8;
+    color: #c1121f;
+}
+
+.result-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.result-actions button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-dashboard {
+    background: #6a0dad;
+    color: #fff;
+}
+
+.btn-dashboard:hover {
+    background: #580b9e;
+}
+
+.btn-retry {
+    background: #28a745;
+    color: white;
+}
+
+.btn-retry:hover {
+    background: #218838;
+}
