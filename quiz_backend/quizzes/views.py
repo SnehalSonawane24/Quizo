@@ -297,3 +297,21 @@ class UserQuizViewSet(viewsets.ViewSet):
 
         serializer = QuizAttemptSerilizer(attempt)
         return Response({"success": True, "data": serializer.data})
+
+    @action(detail=True, methods=["GET"])
+    def attempt_details(self, request, pk=None):
+        """
+        GET /api/quizzes/user/quizzes/<attempt_id>/attempt_details/
+        Fetch a quiz attempt by its ID (finished or ongoing)
+        """
+        attempt = QuizAttempt.objects.filter(pk=pk, user=request.user).first()
+        if not attempt:
+            return Response({"error": "Attempt not found"}, status=404)
+        
+        serializer = QuizAttemptSerilizer(attempt)
+        return custom_response(
+            success=True,
+            message="Quiz attempt details retrieved successfully",
+            data=serializer.data,
+            status_code=status.HTTP_200_OK,
+        )

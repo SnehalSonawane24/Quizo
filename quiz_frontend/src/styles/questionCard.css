@@ -1,0 +1,40 @@
+.question-card {
+  margin-top: 20px;
+}
+
+.question-text {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #222;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.option-item {
+  background: #f9fafb;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option-item:hover {
+  background: #eef2ff;
+}
+
+.option-item input {
+  margin-right: 10px;
+}
+
+.option-label {
+  font-weight: 600;
+  color: #4f46e5;
+  margin-right: 8px;
+}

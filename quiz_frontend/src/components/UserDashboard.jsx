@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/axios";
 import "../styles/userDashboard.css";
-import { FaUser, FaCheckCircle, FaTimesCircle, FaPlay } from "react-icons/fa";
+import { FaUser, FaCheckCircle, FaTimesCircle, FaPlay, FaEye, FaSignOutAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 export default function UserDashboard() {
+
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [quizzes, setQuizzes] = useState([]);
   const [attempts, setAttempts] = useState([]);
@@ -39,13 +43,22 @@ export default function UserDashboard() {
 
   if (loading) return <div className="loading">Loading dashboard...</div>;
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/");
+  };
   return (
     <div className="dashboard-container">
       <div className="user-info">
         <FaUser size={30} />
         <h3>{user?.username}</h3>
         <p>{user?.email}</p>
+        <button onClick={handleLogout}>
+          <FaSignOutAlt /> Logout
+        </button>
       </div>
+
 
       {/* Progress */}
       <div className="progress-section">
@@ -86,7 +99,10 @@ export default function UserDashboard() {
                 <td>{quiz.total_questions}</td>
                 <td>{quiz.time_limit} mins</td>
                 <td>
-                  <button className="btn-start">
+
+                  <button
+                    className="btn-start"
+                    onClick={() => navigate(`/quiz/${quiz}/attempt`)}>
                     <FaPlay /> Start
                   </button>
                 </td>
@@ -110,34 +126,32 @@ export default function UserDashboard() {
             <th>Status</th>
             <th>Score</th>
             <th>Completed At</th>
-            <th>Action</th>
           </tr>
         </thead>
+
         <tbody>
           {attempts.length > 0 ? (
-            attempts.map((a, index) => (
-              <tr key={a.id}>
-                <td>{index + 1}</td>
-                <td>{a.title}</td>
-                <td className={a.is_passed ? "passed" : "failed"}>
-                  {a.is_passed ? <FaCheckCircle /> : <FaTimesCircle />}
-                  &nbsp;{a.is_passed ? "Passed" : "Failed"}
-                </td>
-                <td>{a.score}</td>
-                <td>{a.completed_at}</td>
-                <td>
-                  <button className="btn-retry">
-                    <FaPlay /> Retry
-                  </button>
-                </td>
-              </tr>
-            ))
+            attempts
+              .filter((a) => a.completed_at)
+              .map((a, index) => (
+                <tr key={a.id}>
+                  <td>{index + 1}</td>
+                  <td>{a.title}</td>
+                  <td className={a.is_passed ? "passed" : "failed"}>
+                    {a.is_passed ? <FaCheckCircle /> : <FaTimesCircle />}
+                    &nbsp;{a.is_passed ? "Passed" : "Failed"}
+                  </td>
+                  <td>{a.score}</td>
+                  <td>{a.completed_at}</td>
+                </tr>
+              ))
           ) : (
             <tr>
-              <td colSpan="6">No attempts yet.</td>
+              <td colSpan="6">No completed attempts yet.</td>
             </tr>
           )}
         </tbody>
+
       </table>
     </div>
   );
